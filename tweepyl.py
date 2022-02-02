@@ -19,7 +19,6 @@ def tweet_quote(index=0, len_of_quote=200, id=None):
     if not index:
         index=int(random.random()*(len(f)-len_of_quote))
     quote=f[index:index+len_of_quote]
-    print(quote)
     try:
         api.update_status(quote, in_reply_to_status_id=id)
     except:
@@ -40,7 +39,7 @@ def countword(word):
 
 def mainloop():
     i=0
-    lowest_id=int(open("lastid.txt", "r").read())
+    lowest_id=int(open("lastid.txt", "r").read())+1
     print("Starting main loop...")
     while True:
         mentions=api.mentions_timeline(since_id=lowest_id)
@@ -54,10 +53,12 @@ def mainloop():
                 api.update_status(f"{command[1][8:]} se repite {countword(command[1][8:])} veces", in_reply_to_status_id=mention.id)
             with open("lastid.txt", "w", encoding="utf-8") as f:
                 f.write(mention.id)
+            print(f"Command: '{command}' answered.")
 
         if i%720==0:
             dot_indexes=[index for index, value in enumerate(f) if value == "."]
             tweet_quote(index=random.choice(dot_indexes))
+            print("Quote tweeted.")
         i+=1
         time.sleep(10)
 mainloop()
