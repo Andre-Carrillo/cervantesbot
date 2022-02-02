@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "tweepyl.py", line 1, in <module>
+    import tweepy
+ModuleNotFoundError: No module named 'tweepy'
+Traceback (most recent call last):
+  File "tweepyl.py", line 1, in <module>
+    import tweepy
+ModuleNotFoundError: No module named 'tweepy'
+Traceback (most recent call last):
+  File "tweepyl.py", line 1, in <module>
+    import tweepy
+ModuleNotFoundError: No module named 'tweepy'
+Rate limit reached. Sleeping for: 342
