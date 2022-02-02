@@ -40,7 +40,7 @@ def countword(word):
 def mainloop():
     i=0
     lowest_id=int(open("lastid.txt", "r").read())+1
-    log = open("./log.txt", "a")
+    
     log.write("Starting main loop..."+"\n")
     while True:
         mentions=api.mentions_timeline(since_id=lowest_id)
@@ -55,6 +55,7 @@ def mainloop():
                     api.update_status(f"{command[1][8:]} se repite {countword(command[1][8:])} veces", in_reply_to_status_id=mention.id)
                 with open("lastid.txt", "w", encoding="utf-8") as fi:
                     fi.write(mention.id)
+                fi.close()
                 log.write(f"Command: '{command}' answered."+"\n")
 
         if i+1%2160==0:
@@ -63,4 +64,10 @@ def mainloop():
             log.write("Quote tweeted."+"\n")
         i+=1
         time.sleep(10)
-mainloop()
+log = open("./log.txt", "a")
+try:
+    mainloop()
+except:
+    log.writelines("Process ended due to an error")
+log.close()
+file.close()
