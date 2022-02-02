@@ -44,16 +44,17 @@ def mainloop():
     while True:
         mentions=api.mentions_timeline(since_id=lowest_id)
         print(f"Extracted {len(mentions)} mentions")
-        for mention in mentions:
-            raw_command=mention.text[15:]
-            command=raw_command.strip().split(" ")
-            if command[0]=="cita":
-                tweet_quote(index=int(command[1][8:]), id=mention.id)
-            elif command[0]=="contar":
-                api.update_status(f"{command[1][8:]} se repite {countword(command[1][8:])} veces", in_reply_to_status_id=mention.id)
-            with open("lastid.txt", "w", encoding="utf-8") as fi:
-                fi.write(mention.id)
-            print(f"Command: '{command}' answered.")
+        if mentions:
+            for mention in mentions:
+                raw_command=mention.text[15:]
+                command=raw_command.strip().split(" ")
+                if command[0]=="cita":
+                    tweet_quote(index=int(command[1][8:]), id=mention.id)
+                elif command[0]=="contar":
+                    api.update_status(f"{command[1][8:]} se repite {countword(command[1][8:])} veces", in_reply_to_status_id=mention.id)
+                with open("lastid.txt", "w", encoding="utf-8") as fi:
+                    fi.write(mention.id)
+                print(f"Command: '{command}' answered.")
 
         if i%720==0:
             dot_indexes=[index for index, value in enumerate(file) if value == "."]
