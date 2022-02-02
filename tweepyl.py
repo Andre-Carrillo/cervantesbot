@@ -58,7 +58,7 @@ def mainloop():
                 fi.close()
                 log.write(f"Command: '{command}' answered."+"\n")
 
-        if i+1%2160==0:
+        if (i+1)%2160==0:
             dot_indexes=[index for index, value in enumerate(file) if value == "."]
             tweet_quote(index=random.choice(dot_indexes)+1)
             log.write("Quote tweeted."+"\n")
