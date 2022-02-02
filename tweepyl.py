@@ -58,7 +58,7 @@ def mainloop():
 
         if i%2160==0:
             dot_indexes=[index for index, value in enumerate(file) if value == "."]
-            tweet_quote(index=random.choice(dot_indexes))
+            tweet_quote(index=random.choice(dot_indexes)+1)
             print("Quote tweeted.")
         i+=1
         time.sleep(10)
