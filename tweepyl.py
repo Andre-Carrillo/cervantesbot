@@ -40,7 +40,7 @@ def countword(word):
 
 def mainloop():
     i=0
-    lowest_id=1
+    lowest_id=int(open("lastid.txt", "r").read())
     print("Starting main loop...")
     while True:
         mentions=api.mentions_timeline(since_id=lowest_id)
@@ -51,8 +51,9 @@ def mainloop():
             if command[0]=="cita":
                 tweet_quote(index=int(command[1][8:]), id=mention.id)
             elif command[0]=="contar":
-                api.update_status(f"{command[1]} se repite {countword(command[1][8:])} veces", in_reply_to_status_id=mention.id)
-            lowest_id=mention.id
+                api.update_status(f"{command[1][8:]} se repite {countword(command[1][8:])} veces", in_reply_to_status_id=mention.id)
+            with open("lastid.txt", "w", encoding="utf-8") as f:
+                f.write(mention.id)
 
         if i%720==0:
             dot_indexes=[index for index, value in enumerate(f) if value == "."]
