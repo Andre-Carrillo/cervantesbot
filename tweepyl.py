@@ -15,9 +15,8 @@ bookpath="./libro.txt"
 file = open(bookpath, "r", encoding="utf-8").read()
 
 def tweet_quote(index=0, len_of_quote=200, id=None):
-    # f = open(bookpath, "r", encoding="utf-8").read()
     if not index:
-        index=int(random.random()*(len(f)-len_of_quote))
+        index=int(random.random()*(len(file)-len_of_quote))
     quote=file[index:index+len_of_quote]
     try:
         api.update_status(quote, in_reply_to_status_id=id)
@@ -25,11 +24,10 @@ def tweet_quote(index=0, len_of_quote=200, id=None):
         print("Could not tweet")
 
 def countword(word):
-    # f = open(bookpath, "r", encoding="utf-8").read()
     capital_letter_indexes=[index for index, value in enumerate(file) if value == word[0]]
     word_indexes=[]
     for index in capital_letter_indexes:
-        for i, lettre in enumerate(word):
+        for i, _ in enumerate(word):
             if not file[index+i]==word[i]:
                 break
         else:
@@ -37,11 +35,12 @@ def countword(word):
     return(len(word_indexes))
 
 
-def mainloop():
+def mainloop(hours):
     i=0
     lowest_id=int(open("lastid.txt", "r").read())+1
     
     log.write("Starting main loop..."+"\n")
+    dot_indexes=[index for index, value in enumerate(file) if value == "."]
     while True:
         mentions=api.mentions_timeline(since_id=lowest_id)
         log.write(f"Extracted {len(mentions)} mentions"+"\n")
@@ -58,16 +57,16 @@ def mainloop():
                 fi.close()
                 log.write(f"Command: '{command}' answered."+"\n")
 
-        if (i+1)%2160==0:
-            dot_indexes=[index for index, value in enumerate(file) if value == "."]
+        if (i+1)%(360*hours)==0:
             tweet_quote(index=random.choice(dot_indexes)+1)
             log.write("Quote tweeted."+"\n")
         i+=1
         time.sleep(10)
 log = open("./log.txt", "a")
 try:
-    mainloop()
-except:
+    mainloop(4)
+except Exception as e:
     log.writelines("Process ended due to an error")
+    log.writelines(e)
 log.close()
-file.close()
+
