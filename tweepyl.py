@@ -12,13 +12,13 @@ auth.set_access_token(os.getenv("ATOKEN"),os.getenv("ATOKEN_SECRET"))
 api=tweepy.API(auth)
 
 bookpath="./libro.txt"
-f = open(bookpath, "r", encoding="utf-8").read()
+file = open(bookpath, "r", encoding="utf-8").read()
 
 def tweet_quote(index=0, len_of_quote=200, id=None):
     # f = open(bookpath, "r", encoding="utf-8").read()
     if not index:
         index=int(random.random()*(len(f)-len_of_quote))
-    quote=f[index:index+len_of_quote]
+    quote=file[index:index+len_of_quote]
     try:
         api.update_status(quote, in_reply_to_status_id=id)
     except:
@@ -26,11 +26,11 @@ def tweet_quote(index=0, len_of_quote=200, id=None):
 
 def countword(word):
     # f = open(bookpath, "r", encoding="utf-8").read()
-    capital_letter_indexes=[index for index, value in enumerate(f) if value == word[0]]
+    capital_letter_indexes=[index for index, value in enumerate(file) if value == word[0]]
     word_indexes=[]
     for index in capital_letter_indexes:
         for i, lettre in enumerate(word):
-            if not f[index+i]==word[i]:
+            if not file[index+i]==word[i]:
                 break
         else:
             word_indexes.append(index)
@@ -51,12 +51,12 @@ def mainloop():
                 tweet_quote(index=int(command[1][8:]), id=mention.id)
             elif command[0]=="contar":
                 api.update_status(f"{command[1][8:]} se repite {countword(command[1][8:])} veces", in_reply_to_status_id=mention.id)
-            with open("lastid.txt", "w", encoding="utf-8") as f:
-                f.write(mention.id)
+            with open("lastid.txt", "w", encoding="utf-8") as fi:
+                fi.write(mention.id)
             print(f"Command: '{command}' answered.")
 
         if i%720==0:
-            dot_indexes=[index for index, value in enumerate(f) if value == "."]
+            dot_indexes=[index for index, value in enumerate(file) if value == "."]
             tweet_quote(index=random.choice(dot_indexes))
             print("Quote tweeted.")
         i+=1
