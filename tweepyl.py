@@ -53,7 +53,7 @@ def mainloop(hours):
                 elif command[0]=="contar":
                     api.update_status(f"{command[1][8:]} se repite {countword(command[1][8:])} veces", in_reply_to_status_id=mention.id)
                 with open("lastid.txt", "w", encoding="utf-8") as fi:
-                    fi.write(mention.id)
+                    fi.write(str(mention.id))
                 fi.close()
                 log.write(f"Command: '{command}' answered."+"\n")
 
@@ -67,6 +67,6 @@ try:
     mainloop(4)
 except Exception as e:
     log.writelines("Process ended due to an error")
-    log.writelines(e)
+    log.writelines(dir(e))
 log.close()
 
