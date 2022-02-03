@@ -66,7 +66,7 @@ log = open("./log.txt", "a")
 try:
     mainloop(4)
 except Exception as e:
-    log.writelines(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Process ended due to an error")
+    log.writelines(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Process ended due to an error"+"\n")
     log.writelines(dir(e))
 log.close()
 
