@@ -37,11 +37,7 @@ def countword(word):
 
 def mainloop(hours):
     i=0
-    log = open("./log.txt", "a")
-    try:
-        lowest_id=int(open("lastid.txt", "r").read())+1
-    except:
-        log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"error was here "+"\n")
+    lowest_id=int(open("lastid.txt", "r").read())+1
     log = open("./log.txt", "a")
     log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Starting main loop..."+"\n")
     dot_indexes=[index for index, value in enumerate(file) if value == "."]
@@ -59,6 +55,7 @@ def mainloop(hours):
                     api.update_status(f"{command[1][8:]} se repite {countword(command[1][8:])} veces", in_reply_to_status_id=mention.id)
                 with open("lastid.txt", "w", encoding="utf-8") as fi:
                     fi.write(str(mention.id))
+                    og.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+f"Changed lastid to {mention.id}"+"\n")
                 fi.close()
                 log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+f"Command: '{command}' answered."+"\n")
 
