@@ -38,10 +38,11 @@ def countword(word):
 def mainloop(hours):
     i=0
     lowest_id=int(open("lastid.txt", "r").read())+1
-    
+    log = open("./log.txt", "a")
     log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Starting main loop..."+"\n")
     dot_indexes=[index for index, value in enumerate(file) if value == "."]
     while True:
+        log = open("./log.txt", "a")
         mentions=api.mentions_timeline(since_id=lowest_id)
         log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+f"Extracted {len(mentions)} mentions"+"\n")
         if mentions:
@@ -59,14 +60,16 @@ def mainloop(hours):
 
         if (i+1)%(360*hours)==0:
             tweet_quote(index=random.choice(dot_indexes)+1)
+            
             log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Quote tweeted."+"\n")
         i+=1
+        log.close()
         time.sleep(10)
 log = open("./log.txt", "a")
 try:
     mainloop(4)
 except Exception as e:
     log.writelines(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Process ended due to an error"+"\n")
-    log.writelines(dir(e))
-log.close()
+    log.writelines(str(e))
+
 
