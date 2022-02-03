@@ -37,6 +37,7 @@ def countword(word):
 
 def mainloop(hours):
     i=0
+    log = open("./log.txt", "a")
     try:
         lowest_id=int(open("lastid.txt", "r").read())+1
     except:
