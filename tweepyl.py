@@ -37,7 +37,10 @@ def countword(word):
 
 def mainloop(hours):
     i=0
-    lowest_id=int(open("lastid.txt", "r").read())+1
+    try:
+        lowest_id=int(open("lastid.txt", "r").read())+1
+    except:
+        log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"error was here "+"\n")
     log = open("./log.txt", "a")
     log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Starting main loop..."+"\n")
     dot_indexes=[index for index, value in enumerate(file) if value == "."]
@@ -70,6 +73,6 @@ try:
     mainloop(4)
 except Exception as e:
     log.writelines(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Process ended due to an error"+"\n")
-    log.writelines(str(e))
+    log.writelines(str(e)+"\n")
 
 
