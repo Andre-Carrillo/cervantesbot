@@ -43,7 +43,7 @@ def mainloop(hours):
     dot_indexes=[index for index, value in enumerate(file) if value == "."]
     while True:
         log = open("./log.txt", "a")
-        mentions=api.mentions_timeline(since_id=lowest_id)
+        mentions=api.mentions_timeline(since_id=lowest_id+1)
         log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+f"Extracted {len(mentions)} mentions"+"\n")
         if mentions:
             for mention in mentions:
