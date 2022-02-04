@@ -4,6 +4,8 @@ import time
 import os
 from dotenv import load_dotenv
 
+from test import quoteimage
+
 load_dotenv()
 
 auth = tweepy.OAuthHandler(os.getenv("APIKEY"), os.getenv("APIKEY_SECRET"))
@@ -19,9 +21,11 @@ def tweet_quote(index=0, len_of_quote=200, id=None):
         index=int(random.random()*(len(file)-len_of_quote))
     quote=file[index:index+len_of_quote]
     try:
-        api.update_status(quote, in_reply_to_status_id=id)
-    except:
-        print(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Could not tweet")
+        # api.update_status_(quote, in_reply_to_status_id=id)
+        quoteimage(file, index).save("image.png")
+        api.update_status_with_media("",filename="image.png", in_reply_to_status_id=id)
+    except Exception as e:
+        print(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+f"Could not tweet: {e}"+"\n")
 
 def countword(word):
     capital_letter_indexes=[index for index, value in enumerate(file) if value == word[0]]
