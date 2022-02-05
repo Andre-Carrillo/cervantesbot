@@ -3,4 +3,4 @@
 lastid.txt
 log.txt
 venv
-test.py
+__pycache__
