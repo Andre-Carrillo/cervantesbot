@@ -14,6 +14,8 @@ from test import quoteimage
 #histograma de frecuencia de una sílaba//done
 #quotes al revés//done
 #hacerlo con plotly//done
+#Most common 2-letter-syllabe that are after a certain word
+
 
 load_dotenv()
 
@@ -121,10 +123,11 @@ def mainloop(hours):
         log.close()
         time.sleep(10)
 log = open("./log.txt", "a")
-try:
-    mainloop(4)
-except Exception as e:
-    log.writelines(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Process ended due to an error"+"\n")
-    log.writelines(str(e)+"\n")
+while True:
+    try:
+        mainloop(4)
+    except Exception as e:
+        log.writelines(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Process ended due to an error"+"\n")
+        log.writelines(str(e)+"\n")
 
 
