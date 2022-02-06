@@ -3,7 +3,9 @@ import random
 import time
 import os
 from dotenv import load_dotenv
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
+import plotly.express as px
+import numpy as np
 
 from test import quoteimage
 
@@ -11,8 +13,7 @@ from test import quoteimage
 #Wrong request answer //done
 #histograma de frecuencia de una sílaba//done
 #quotes al revés//done
-#hacerlo con plotly
-#si hago videos, que lo narre con voz de loquendo
+#hacerlo con plotly//done
 
 load_dotenv()
 
@@ -24,9 +25,21 @@ api=tweepy.API(auth, wait_on_rate_limit=True)
 bookpath="./libro.txt"
 file = open(bookpath, "r", encoding="utf-8").read()
 
-def tweet_quote(index=0, len_of_quote=200, id=None, reverse=False):
+def tweet_quote(index=0, len_of_quote=200, id=None, reverse=False, inchapter=None):
     if not index:
         index=int(random.random()*(len(file)-len_of_quote))
+    if inchapter:
+        word="Capítulo"
+        capital_letter_indexes=[index for index, value in enumerate(file) if value == word[0]]
+        chap_indexes=[]
+        for index in capital_letter_indexes:
+            for i, _ in enumerate(word):
+                if not file[index+i]==word[i]:
+                    break
+            else:
+                chap_indexes.append(index)
+            chap_indexes.append(len(file))#to not have problems with last chapter
+        index=chap_indexes[inchapter+1]+index%(chap_indexes[inchapter+2]-chap_indexes[inchapter+1])
     quote=file[index:index+len_of_quote]
     try:
         # api.update_status_(quote, in_reply_to_status_id=id)
@@ -44,8 +57,11 @@ def sylhist(syl, bins=20):
                 break
         else:
             word_indexes.append(index)
-    plt.hist(word_indexes, bins=bins)
-    plt.savefig("./plot.png")
+    try:
+        fig = px.histogram(np.array(word_indexes), nbins=bins)
+        fig.write_image("./plot.png")
+    except Exception as e:
+        print(e)
 
 def countword(word):
     capital_letter_indexes=[index for index, value in enumerate(file) if value == word[0]]
@@ -77,6 +93,8 @@ def mainloop(hours):
                     if command[0]=="cita":
                         if command[2]=="reverso":
                             tweet_quote(index=int(command[1][8:]), id=mention.id, reverse=True)
+                        elif command[2][:8]=="capítulo=":
+                            tweet_quote(index=int(command[1][8:]), id=mention.id, inchapter=int(command[2][8:]))
                         else:
                             tweet_quote(index=int(command[1][8:]), id=mention.id)
                     elif command[0]=="contar":

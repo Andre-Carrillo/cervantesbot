@@ -11,7 +11,7 @@ def quoteimage(book, rn=0, reverse=False):
     nlines=quote.count("\n")
     print(nlines)
 
-    out = Image.new("RGB", (270, nlines*15-5), (255, 255, 255))
+    out = Image.new("RGB", (270, nlines*15+25), (255, 255, 255))
     d = ImageDraw.Draw(out)
     d.multiline_text((10, 10), quote, fill=(0, 0, 0))
 
