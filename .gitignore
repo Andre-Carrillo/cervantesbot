@@ -1,6 +1,5 @@
 .env
 *.ipynb
-lastid.txt
 log.txt
 venv
 __pycache__
