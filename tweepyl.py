@@ -8,6 +8,7 @@ import plotly.express as px
 import numpy as np
 
 from test import quoteimage
+from frec_image import frec_image
 
 ## TODOS
 #Wrong request answer //done
@@ -15,17 +16,32 @@ from test import quoteimage
 #quotes al revés//done
 #hacerlo con plotly//done
 #Most common 2-letter-syllabe that are after a certain word
+#creo que el quoter por capítulo funciona mal xd
 
 
-load_dotenv()
 
-auth = tweepy.OAuthHandler(os.getenv("APIKEY"), os.getenv("APIKEY_SECRET"))
-auth.set_access_token(os.getenv("ATOKEN"),os.getenv("ATOKEN_SECRET"))
 
-api=tweepy.API(auth, wait_on_rate_limit=True)
+def frecafter(file, word, nchars=2):
+    capital_letter_indexes=[index for index, value in enumerate(file) if value == word[0]]
+    chap_indexes=[]
+    for index in capital_letter_indexes:
+        for i, _ in enumerate(word):
+            if not file[index+i]==word[i]:
+                break
+        else:
+            chap_indexes.append(index)
+    syllabes=[]
+    for index in chap_indexes:
+        syllabes.append(file[index+len(word):index+len(word)+nchars:])
+    syllabes[0]
+    import pandas as pd
+    df = pd.Series(syllabes)
+    return dict(df.value_counts())
 
-bookpath="./libro.txt"
-file = open(bookpath, "r", encoding="utf-8").read()
+def tweet_frec(word, id, chars):
+    frec_image(file, word, chars=chars).save("frecuency.png")
+    api.update_status_with_media("",filename="frecuency.png", in_reply_to_status_id=id)
+
 
 def tweet_quote(index=0, len_of_quote=200, id=None, reverse=False, inchapter=None):
     if not index:
@@ -122,12 +138,23 @@ def mainloop(hours):
         i+=1
         log.close()
         time.sleep(10)
-log = open("./log.txt", "a")
-while True:
-    try:
-        mainloop(4)
-    except Exception as e:
-        log.writelines(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Process ended due to an error"+"\n")
-        log.writelines(str(e)+"\n")
+
+if __name__=="__main__":
+    log = open("./log.txt", "a")
+    load_dotenv()
+
+    auth = tweepy.OAuthHandler(os.getenv("APIKEY"), os.getenv("APIKEY_SECRET"))
+    auth.set_access_token(os.getenv("ATOKEN"),os.getenv("ATOKEN_SECRET"))
+
+    api=tweepy.API(auth, wait_on_rate_limit=True)
+
+    bookpath="./libro.txt"
+    file = open(bookpath, "r", encoding="utf-8").read()
+    while True:
+        try:
+            mainloop(4)
+        except Exception as e:
+            log.writelines(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Process ended due to an error"+"\n")
+            log.writelines(str(e)+"\n")
 
 
