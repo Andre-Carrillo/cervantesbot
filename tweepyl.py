@@ -8,40 +8,25 @@ import plotly.express as px
 import numpy as np
 
 from test import quoteimage
-from frec_image import frec_image
+from frec_image import frec_image, frec_image_plotly
 
-## TODOS
+#TODOS
 #Wrong request answer //done
 #histograma de frecuencia de una sílaba//done
 #quotes al revés//done
 #hacerlo con plotly//done
 #Most common 2-letter-syllabe that are after a certain word//done
 #creo que el quoter por capítulo funciona mal xd
+#hacer que la imagen de frecuencias también pueda ser por plotly
 
-
-
-
-# def frecafter(file, word, nchars=2):
-#     capital_letter_indexes=[index for index, value in enumerate(file) if value == word[0]]
-#     chap_indexes=[]
-#     for index in capital_letter_indexes:
-#         for i, _ in enumerate(word):
-#             if not file[index+i]==word[i]:
-#                 break
-#         else:
-#             chap_indexes.append(index)
-#     syllabes=[]
-#     for index in chap_indexes:
-#         syllabes.append(file[index+len(word):index+len(word)+nchars:])
-#     syllabes[0]
-#     import pandas as pd
-#     df = pd.Series(syllabes)
-#     return dict(df.value_counts())
 
 def tweet_frec(word, id, chars):
     frec_image(file, word, chars=chars).save("frecuency.png")
     api.update_status_with_media("",filename="frecuency.png", in_reply_to_status_id=id)
 
+def tweet_frec_plotly(word, id, chars, long):
+    frec_image_plotly(file, word, long, chars=chars)
+    api.update_status_with_media("", filename="frecuency.png", in_reply_to_status_id=id)
 
 def tweet_quote(index=0, len_of_quote=200, id=None, reverse=False, inchapter=None):
     if not index:
@@ -121,7 +106,11 @@ def mainloop(hours):
                         sylhist(command[1][8:])
                         api.update_status_with_media("",filename="plot.png", in_reply_to_status_id=mention.id)                    
                     elif command[0]=="frecuencia":
-                        tweet_frec(command[1][8:], mention.id, chars=int(command[2]))
+                        if command[3]=="plotly":
+                            tweet_frec_plotly(command[1][8:], mention.id, int(command[2]), 2)
+                        else:
+                            tweet_frec(command[1][8:], mention.id, chars=int(command[2]))
+
                     else:
                         api.update_status(f"Formato incorrecto.\nUsa los comandos 'cita' o 'contar' seguidos de 'empieza' o 'palabra' seguido de tu pedido.", in_reply_to_status_id=mention.id)
                 except:
