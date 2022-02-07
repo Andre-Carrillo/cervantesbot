@@ -1,4 +1,5 @@
 from PIL import Image, ImageDraw
+import pandas as pd
 import re
 def frecafter(file, word, nchars=2):
     capital_letter_indexes=[index for index, value in enumerate(file) if value == word[0]]
@@ -13,10 +14,9 @@ def frecafter(file, word, nchars=2):
     for index in chap_indexes:
         syllabes.append(file[index+len(word):index+len(word)+nchars:])
     syllabes[0]
-    import pandas as pd
     df = pd.Series(syllabes)
     return dict(df.value_counts())
-    
+
 def frec_image(file, word, chars=2):
 
     text = str(frecafter(file, word, nchars=chars))

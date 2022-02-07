@@ -15,7 +15,7 @@ from frec_image import frec_image
 #histograma de frecuencia de una sílaba//done
 #quotes al revés//done
 #hacerlo con plotly//done
-#Most common 2-letter-syllabe that are after a certain word
+#Most common 2-letter-syllabe that are after a certain word//done
 #creo que el quoter por capítulo funciona mal xd
 
 
