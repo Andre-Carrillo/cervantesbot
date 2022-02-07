@@ -107,7 +107,7 @@ def mainloop(hours):
                         api.update_status_with_media("",filename="plot.png", in_reply_to_status_id=mention.id)                    
                     elif command[0]=="frecuencia":
                         if command[3]=="plotly":
-                            tweet_frec_plotly(command[1][8:], mention.id, int(command[2]), 10)
+                            tweet_frec_plotly(command[1][8:], mention.id, int(command[2]), int(command[4]))
                         else:
                             tweet_frec(command[1][8:], mention.id, chars=int(command[2]))
 
