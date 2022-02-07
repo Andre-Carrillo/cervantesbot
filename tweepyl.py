@@ -120,6 +120,8 @@ def mainloop(hours):
                     elif command[0]=="histograma":
                         sylhist(command[1][8:])
                         api.update_status_with_media("",filename="plot.png", in_reply_to_status_id=mention.id)                    
+                    elif command[0]=="frecuencia":
+                        tweet_frec(command[1][8:], mention.id, chars=int(command[2]))
                     else:
                         api.update_status(f"Formato incorrecto.\nUsa los comandos 'cita' o 'contar' seguidos de 'empieza' o 'palabra' seguido de tu pedido.", in_reply_to_status_id=mention.id)
                 except:
