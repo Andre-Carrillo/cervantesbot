@@ -123,7 +123,7 @@ def mainloop(hours):
                     log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+f"Changed lastid to {mention.id}"+"\n")
                 fi.close()
         #if (i+1)%(360*hours)==0:
-        if (i+1)%1440==0:
+        if i%1440==0:
             try:
                 tweet_quote(index=random.choice(dot_indexes)+1)
                 log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Quote tweeted."+"\n")
