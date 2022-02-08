@@ -17,7 +17,7 @@ from frec_image import frec_image, frec_image_plotly
 #hacerlo con plotly//done
 #Most common 2-letter-syllabe that are after a certain word//done
 #creo que el quoter por capítulo funciona mal xd
-#hacer que la imagen de frecuencias también pueda ser por plotly
+#hacer que la imagen de frecuencias también pueda ser por plotly//done
 
 
 def tweet_frec(word, id, chars):
@@ -43,7 +43,6 @@ def tweet_quote(index=0, len_of_quote=200, id=None, reverse=False, inchapter=Non
                 chap_indexes.append(index)
             chap_indexes.append(len(file))#to not have problems with last chapter
         index=chap_indexes[inchapter+1]+index%(chap_indexes[inchapter+2]-chap_indexes[inchapter+1])
-    quote=file[index:index+len_of_quote]
     try:
         # api.update_status_(quote, in_reply_to_status_id=id)
         quoteimage(file, index, reverse=reverse).save("image.png")
@@ -83,6 +82,7 @@ def mainloop(hours):
     log = open("./log.txt", "a")
     log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Starting main loop..."+"\n")
     dot_indexes=[index for index, value in enumerate(file) if value == "."]
+    tweetpendiente=False
     while True:
         log = open("./log.txt", "a")
         lowest_id=int(open("lastid.txt", "r").read())
@@ -123,11 +123,15 @@ def mainloop(hours):
                     log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+f"Changed lastid to {mention.id}"+"\n")
                 fi.close()
         #if (i+1)%(360*hours)==0:
-        if time.localtime()[3]%4==0:
-            tweet_quote(index=random.choice(dot_indexes)+1)
-            
-            log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Quote tweeted."+"\n")
-        i+=1
+        if (i+1)%1440==0:
+            try:
+                tweet_quote(index=random.choice(dot_indexes)+1)
+                log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Quote tweeted."+"\n")
+                tweetpendiente=False
+            except:
+                tweetpendiente=True
+        if not tweetpendiente:
+            i+=1
         log.close()
         time.sleep(10)
 
