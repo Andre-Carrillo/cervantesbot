@@ -46,7 +46,10 @@ def tweet_quote(index=0, len_of_quote=200, id=None, reverse=False, inchapter=Non
     try:
         # api.update_status_(quote, in_reply_to_status_id=id)
         quoteimage(file, index, reverse=reverse).save("image.png")
-        api.update_status_with_media("",filename="image.png", in_reply_to_status_id=id)
+        if id:
+            api.update_status_with_media("",filename="image.png", in_reply_to_status_id=id)
+        else:
+            api.update_status_with_media("", filename="image.png")
     except Exception as e:
         print(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+f"Could not tweet: {e}"+"\n")
 
