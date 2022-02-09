@@ -45,13 +45,23 @@ def tweet_quote(index=0, len_of_quote=200, id=None, reverse=False, inchapter=Non
         index=chap_indexes[inchapter+1]+index%(chap_indexes[inchapter+2]-chap_indexes[inchapter+1])
     try:
         # api.update_status_(quote, in_reply_to_status_id=id)
-        quoteimage(file, index, reverse=reverse).save("image.png")
+        dot_indexes=[index for index, value in enumerate(file) if value == "."]
+        quoteimage(file, random.choice(dot_indexes), reverse=reverse).save("image.png")
         if id:
             api.update_status_with_media("",filename="image.png", in_reply_to_status_id=id)
         else:
             api.update_status_with_media("", filename="image.png")
     except Exception as e:
         print(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+f"Could not tweet: {e}"+"\n")
+
+def periodic_quote():
+    dot_indexes=[index for index, value in enumerate(file) if value == "."]
+    try:
+        quoteimage(file, random.choice(dot_indexes), reverse=False).save("image.png")
+    except:
+        print("el error está aquí")
+    api.update_status_with_media("", filename="image.png")
+    print(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+f"Could not tweet: {e}"+"\n")
 
 def sylhist(syl, bins=20):
     capital_letter_indexes=[index for index, value in enumerate(file) if value == syl[0]]
@@ -81,11 +91,8 @@ def countword(word):
 
 
 def mainloop(hours):
-    i=0
     log = open("./log.txt", "a")
     log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Starting main loop..."+"\n")
-    dot_indexes=[index for index, value in enumerate(file) if value == "."]
-    tweetpendiente=False
     while True:
         log = open("./log.txt", "a")
         lowest_id=int(open("lastid.txt", "r").read())
@@ -124,17 +131,6 @@ def mainloop(hours):
                 with open("lastid.txt", "w", encoding="utf-8") as fi:
                     fi.write(str(mention.id))
                     log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+f"Changed lastid to {mention.id}"+"\n")
-                fi.close()
-        #if (i+1)%(360*hours)==0:
-        if i%1440==0:
-            try:
-                tweet_quote(index=random.choice(dot_indexes)+1)
-                log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Quote tweeted."+"\n")
-                tweetpendiente=False
-            except:
-                tweetpendiente=True
-        if not tweetpendiente:
-            i+=1
         log.close()
         time.sleep(10)
 
@@ -144,7 +140,6 @@ if __name__=="__main__":
 
     auth = tweepy.OAuthHandler(os.getenv("APIKEY"), os.getenv("APIKEY_SECRET"))
     auth.set_access_token(os.getenv("ATOKEN"),os.getenv("ATOKEN_SECRET"))
-
     api=tweepy.API(auth, wait_on_rate_limit=True)
 
     bookpath="./libro.txt"
