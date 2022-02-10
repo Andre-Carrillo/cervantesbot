@@ -2,8 +2,7 @@ import random
 import time
 import numpy as np
 
-from frec_image import *
-from quoteimage import quoteimage
+from images import *
 
 class Poster:
     def __init__(self,api, file):

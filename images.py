@@ -2,6 +2,8 @@ from PIL import Image, ImageDraw
 import pandas as pd
 import re
 import plotly.express as px
+from PIL import Image, ImageDraw
+import textwrap
 
 def frecafter(file, word, nchars=2):
     capital_letter_indexes=[index for index, value in enumerate(file) if value == word[0]]
@@ -42,3 +44,20 @@ def frec_image_plotly(file, word, nsyllabes,chars=2):
     frecdf = frecdf.iloc[:nsyllabes]
     fig  = px.bar(data_frame=frecdf, x="SÍLABAS", y="FRECUENCIA")
     fig.write_image("frecuency.png")
+
+
+def quoteimage(book, index, reverse=False): 
+    dot_indexes=[index for index, value in enumerate(book) if value == "."]
+    rn=dot_indexes.index(index)
+    index , end= dot_indexes[rn-1:rn+1]
+    quote=book[index+1: end+1]
+    if reverse:
+        quote = quote[::-1]
+    quote = textwrap.fill(quote, 40)
+    nlines=quote.count("\n")
+    out = Image.new("RGB", (270, nlines*15+25), (255, 255, 255))
+    d = ImageDraw.Draw(out)
+    d.multiline_text((10, 10), quote, fill=(0, 0, 0))
+
+    # out.save("image.png")
+    return out
