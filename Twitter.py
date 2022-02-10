@@ -39,6 +39,6 @@ class Twitter:
                     fi.write(str(id))
     
     def getmentions(self):
-        lowest_id=int(open("lastid.txt", "r").read())
+        lowest_id=int(open("./textfiles/lastid.txt", "r").read())
         mentions=self.api.mentions_timeline(since_id=lowest_id+1)
         return {mention.id:mention.text[15:].strip().split() for mention in mentions}

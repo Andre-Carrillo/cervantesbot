@@ -8,7 +8,7 @@ def main(hours):
     counter=0
     while counter<hours*360:
         mentions_dictionary = Bot.getmentions()
-        for id, command in mentions_dictionary.item():
+        for id, command in mentions_dictionary.items():
             Bot.answermention(id, command)
         time.sleep(10)
         counter+=1
