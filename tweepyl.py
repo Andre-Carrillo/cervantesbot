@@ -90,7 +90,7 @@ def countword(word):
     return(len(word_indexes))
 
 
-def mainloop(hours):
+def mainloop():
     log = open("./log.txt", "a")
     log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Starting main loop..."+"\n")
     while True:
@@ -122,7 +122,7 @@ def mainloop(hours):
                             tweet_frec(command[1][8:], mention.id, chars=int(command[2]))
 
                     else:
-                        api.update_status(f"Formato incorrecto.\nUsa los comandos 'cita' o 'contar' seguidos de 'empieza' o 'palabra' seguido de tu pedido.", in_reply_to_status_id=mention.id)
+                        api.update_status(f"Formato incorrecto.\nUsa los comandos en el comentario fijado de mi perfil.", in_reply_to_status_id=mention.id)
                 except:
                     api.update_status(f"Se produjo un error. Revisa si el formato está escrito correctamente.", in_reply_to_status_id=mention.id)
 
@@ -150,5 +150,3 @@ if __name__=="__main__":
         except Exception as e:
             log.writelines(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Process ended due to an error"+"\n")
             log.writelines(str(e)+"\n")
-
-
