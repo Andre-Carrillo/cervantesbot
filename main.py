@@ -1,7 +1,7 @@
 from Twitter import Twitter
 import time
 
-bookpath="./libro.txt"
+bookpath="./textfiles/libro.txt"
 file = open(bookpath, "r", encoding="utf-8").read()
 Bot = Twitter(file)
 def main(hours):

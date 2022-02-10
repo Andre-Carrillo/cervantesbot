@@ -35,7 +35,7 @@ class Twitter:
                 self.api.update_status(f"Formato incorrecto.\nUsa los comandos en el comentario fijado de mi perfil.", in_reply_to_status_id=id)
         except:
             self.api.update_status(f"Se produjo un error. Revisa si el formato está escrito correctamente.", in_reply_to_status_id=id)
-        with open("lastid.txt", "w", encoding="utf-8") as fi:
+        with open("./textfiles/lastid.txt", "w", encoding="utf-8") as fi:
                     fi.write(str(id))
     
     def getmentions(self):
