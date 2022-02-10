@@ -18,6 +18,7 @@ from frec_image import frec_image, frec_image_plotly
 #Most common 2-letter-syllabe that are after a certain word//done
 #creo que el quoter por capítulo funciona mal xd
 #hacer que la imagen de frecuencias también pueda ser por plotly//done
+#make this to be executed for only 4 hours for it to be executed by crontab
 
 
 def tweet_frec(word, id, chars):
@@ -93,7 +94,8 @@ def countword(word):
 def mainloop():
     log = open("./log.txt", "a")
     log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Starting main loop..."+"\n")
-    while True:
+    i=0
+    while i<1600:
         log = open("./log.txt", "a")
         lowest_id=int(open("lastid.txt", "r").read())
         mentions=api.mentions_timeline(since_id=lowest_id+1)
@@ -132,6 +134,7 @@ def mainloop():
                     fi.write(str(mention.id))
                     log.write(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+f"Changed lastid to {mention.id}"+"\n")
         log.close()
+        i+=1
         time.sleep(10)
 
 if __name__=="__main__":
@@ -146,7 +149,7 @@ if __name__=="__main__":
     file = open(bookpath, "r", encoding="utf-8").read()
     while True:
         try:
-            mainloop(4)
+            mainloop()
         except Exception as e:
             log.writelines(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+"Process ended due to an error"+"\n")
             log.writelines(str(e)+"\n")
