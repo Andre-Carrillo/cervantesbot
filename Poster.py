@@ -27,21 +27,21 @@ class Poster:
         try:
             # api.update_status_(quote, in_reply_to_status_id=id)
             dot_indexes=[index for index, value in enumerate(self.file) if value == "."]
-            quoteimage(self.file, random.choice(dot_indexes), reverse=reverse).save("image.png")
+            quoteimage(self.file, random.choice(dot_indexes), reverse=reverse).save("./images/image.png")
             if id:
-                self.api.update_status_with_media("",filename="image.png", in_reply_to_status_id=id)
+                self.api.update_status_with_media("",filename="./images/image.png", in_reply_to_status_id=id)
             else:
-                self.api.update_status_with_media("", filename="image.png")
+                self.api.update_status_with_media("", filename="./images/image.png")
         except Exception as e:
             print(f"[{time.localtime()[3]}:{time.localtime()[4]}:{time.localtime()[5]}-{time.localtime()[1:3]}]"+f"Could not tweet: {e}"+"\n")
 
     def frecuency(self,word, id, chars):
-        frec_image(self.file, word, chars=chars).save("frecuency.png")
-        self.api.update_status_with_media("",filename="frecuency.png", in_reply_to_status_id=id)
+        frec_image(self.file, word, chars=chars).save("./images/frecuency.png")
+        self.api.update_status_with_media("",filename="./images/frecuency.png", in_reply_to_status_id=id)
 
     def frecuency_plotly(self, word, id, chars, long):
         frec_image_plotly(self.file, word, long, chars=chars)
-        self.api.update_status_with_media("", filename="frecuency.png", in_reply_to_status_id=id)
+        self.api.update_status_with_media("", filename="./images/frecuency.png", in_reply_to_status_id=id)
 
     def histogram(self, syl, bins=20):
         capital_letter_indexes=[index for index, value in enumerate(self.file) if value == syl[0]]
@@ -54,10 +54,10 @@ class Poster:
                 word_indexes.append(index)
         try:
             fig = px.histogram(np.array(word_indexes), nbins=bins)
-            fig.write_image("./plot.png")
+            fig.write_image("./images/plot.png")
         except Exception as e:
             print(e)
-        self.api.update_status_with_media("",filename="plot.png", in_reply_to_status_id=id)
+        self.api.update_status_with_media("",filename="./images/plot.png", in_reply_to_status_id=id)
 
     def count(self, word, id):
         capital_letter_indexes=[index for index, value in enumerate(self.file) if value == word[0]]

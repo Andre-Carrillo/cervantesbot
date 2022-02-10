@@ -43,7 +43,7 @@ def frec_image_plotly(file, word, nsyllabes,chars=2):
     frecdf = pd.DataFrame(frecuencies_trans)
     frecdf = frecdf.iloc[:nsyllabes]
     fig  = px.bar(data_frame=frecdf, x="SÍLABAS", y="FRECUENCIA")
-    fig.write_image("frecuency.png")
+    fig.write_image("./images/frecuency.png")
 
 
 def quoteimage(book, index, reverse=False): 
