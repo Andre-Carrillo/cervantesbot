@@ -16,4 +16,4 @@ dot_indexes=[index for index, value in enumerate(file) if value == "."]
 index=random.choice(dot_indexes)
 quoteimage(file, index).save("./images/image.png")
 
-api.update_status_with_media("", filename=".7images/image.png")
+api.update_status_with_media("", filename="./images/image.png")
