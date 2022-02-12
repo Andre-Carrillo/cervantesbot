@@ -1,9 +1,7 @@
 from Twitter import Twitter
 import time
 
-bookpath="./textfiles/libro.txt"
-file = open(bookpath, "r", encoding="utf-8").read()
-Bot = Twitter(file)
+
 def main(hours):
     counter=0
     while counter<hours*360:
@@ -13,4 +11,7 @@ def main(hours):
         time.sleep(10)
         counter+=1
 if __name__=="__main__":
-    main(4)
+    bookpath="./textfiles/libro.txt"
+    with open(bookpath, "r", encoding="utf-8") as file:
+        Bot = Twitter(file)
+        main(4)
