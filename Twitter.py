@@ -15,24 +15,25 @@ class Twitter:
 
     def answermention(self, id, command):
         try:
-            if command[0]=="cita":
-                if command[2]=="reverso":
-                    self.Poster.quote(index=int(command[1][8:]), id=id, reverse=True)
-                elif command[2][:8]=="capítulo=":
-                    self.Poster.quote(index=int(command[1][8:]), id=id, inchapter=int(command[2][8:]))
-                else:
-                    self.Poster.quote(index=int(command[1][8:]), id=id)
-            elif command[0]=="contar":
-                self.Poster.count(command[1][8:], id)
-            elif command[0]=="histograma":
-                self.Poster.histogram(command[1][8:])      
-            elif command[0]=="frecuencia":
-                if command[3]=="plotly":
-                    self.Poster.frecuency_plotly(command[1][8:], id, int(command[2]), int(command[4]))
-                else:
-                    self.Poster.frecuency(command[1][8:], id, int(command[2]))
-            else:
-                self.api.update_status(f"Formato incorrecto.\nUsa los comandos en el comentario fijado de mi perfil.", in_reply_to_status_id=id)
+            match command[0]:
+                case "cita":
+                    if command[2]=="reverso":
+                        self.Poster.quote(index=int(command[1][8:]), id=id, reverse=True)
+                    elif command[2][:8]=="capítulo=":
+                        self.Poster.quote(index=int(command[1][8:]), id=id, inchapter=int(command[2][8:]))
+                    else:
+                        self.Poster.quote(index=int(command[1][8:]), id=id)
+                case "contar":
+                    self.Poster.count(command[1][8:], id)
+                case "histograma":
+                    self.Poster.histogram(command[1][8:])      
+                case "frecuencia":
+                    if command[3]=="plotly":
+                        self.Poster.frecuency_plotly(command[1][8:], id, int(command[2]), int(command[4]))
+                    else:
+                        self.Poster.frecuency(command[1][8:], id, int(command[2]))
+                case _:
+                    self.api.update_status(f"Formato incorrecto.\nUsa los comandos en el comentario fijado de mi perfil.", in_reply_to_status_id=id)
         except:
             self.api.update_status(f"Se produjo un error. Revisa si el formato está escrito correctamente.", in_reply_to_status_id=id)
         with open("./textfiles/lastid.txt", "w", encoding="utf-8") as fi:
