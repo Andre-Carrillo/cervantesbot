@@ -34,8 +34,9 @@ class Twitter:
                         self.Poster.frecuency(command[1][8:], id, int(command[2]))
                 case _:
                     self.api.update_status(f"Formato incorrecto.\nUsa los comandos en el comentario fijado de mi perfil.", in_reply_to_status_id=id)
-        except:
+        except Exception as e:
             self.api.update_status(f"Se produjo un error. Revisa si el formato está escrito correctamente.", in_reply_to_status_id=id)
+            print(e)
         with open("./textfiles/lastid.txt", "w", encoding="utf-8") as fi:
                     fi.write(str(id))
     
