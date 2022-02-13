@@ -13,7 +13,7 @@ class Twitter:
         self.api=tweepy.API(auth, wait_on_rate_limit=True)
         self.Poster = Poster(self.api, file)
 
-    def answermention(self, id, command):
+    def answer_mention(self, id, command):
         try:
             match command[0]:
                 case "cita":
@@ -42,7 +42,7 @@ class Twitter:
         with open("./textfiles/lastid.txt", "w", encoding="utf-8") as fi:
                     fi.write(str(id))
     
-    def getmentions(self):
+    def get_mentions(self):
         lowest_id=int(open("./textfiles/lastid.txt", "r").read())
         mentions=self.api.mentions_timeline(since_id=lowest_id+1)
 
