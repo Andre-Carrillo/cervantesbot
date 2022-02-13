@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import tweepy
 import os
-from Poster import Poster
+from poster import Poster
 
 
 class Twitter:
@@ -33,9 +33,11 @@ class Twitter:
                     else:
                         self.Poster.frecuency(command[1][8:], id, int(command[2]))
                 case _:
-                    self.api.update_status(f"Formato incorrecto.\nUsa los comandos en el comentario fijado de mi perfil.", in_reply_to_status_id=id)
+                    self.api.update_status(f"""Formato incorrecto.\nUsa los comandos
+                                            en el comentario fijado de mi perfil.""", in_reply_to_status_id=id)
         except Exception as e:
-            self.api.update_status(f"Se produjo un error. Revisa si el formato está escrito correctamente.", in_reply_to_status_id=id)
+            self.api.update_status(f"""Se produjo un error. Revisa si el formato
+                                    está escrito correctamente.""", in_reply_to_status_id=id)
             print(e)
         with open("./textfiles/lastid.txt", "w", encoding="utf-8") as fi:
                     fi.write(str(id))
@@ -43,4 +45,7 @@ class Twitter:
     def getmentions(self):
         lowest_id=int(open("./textfiles/lastid.txt", "r").read())
         mentions=self.api.mentions_timeline(since_id=lowest_id+1)
+
+        #Returns a dictionary that has the id of every mention and also has a list of the commands
+        #{id:command_list}
         return {mention.id:mention.text[15:].strip().split() for mention in mentions}

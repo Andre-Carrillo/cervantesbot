@@ -1,4 +1,4 @@
-from Twitter import Twitter
+from twitter import Twitter
 import time
 
 
@@ -10,6 +10,8 @@ def main(hours):
             Bot.answermention(id, command)
         time.sleep(10)
         counter+=1
+
+        
 if __name__=="__main__":
     bookpath="./textfiles/libro.txt"
     with open(bookpath, "r", encoding="utf-8") as file:

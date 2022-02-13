@@ -5,7 +5,7 @@ import plotly.express as px
 from PIL import Image, ImageDraw
 import textwrap
 
-def frecafter(file, word, nchars=2):
+def _frecuency_dictionary(file, word, nchars=2):
     capital_letter_indexes=[index for index, value in enumerate(file) if value == word[0]]
     chap_indexes=[]
     for index in capital_letter_indexes:
@@ -22,8 +22,7 @@ def frecafter(file, word, nchars=2):
     return dict(df.value_counts())
 
 def frec_image(file, word, chars=2):
-
-    text = str(frecafter(file, word, nchars=chars))
+    text = str(_frecuency_dictionary(file, word, nchars=chars))
     text = re.sub(r"[{}]", "", text)
     text = re.sub(r"\b,\s", "\n",text)
     text = "syllabe: frecuency \n"+text
@@ -35,9 +34,10 @@ def frec_image(file, word, chars=2):
     # out.save("image.png")
     return out
 
+
 def frec_image_plotly(file, word, nsyllabes,chars=2):
 
-    frecuencies = frecafter(file, word, nchars=chars)
+    frecuencies = _frecuency_dictionary(file, word, nchars=chars)
     frecuencies_trans = {"SÍLABAS":[f"'{key}'" for key, _ in frecuencies.items()],
                          "FRECUENCIA":[value for _, value in frecuencies.items()]}
     frecdf = pd.DataFrame(frecuencies_trans)
@@ -46,7 +46,7 @@ def frec_image_plotly(file, word, nsyllabes,chars=2):
     fig.write_image("./images/frecuency.png")
 
 
-def quoteimage(book, index, reverse=False): 
+def quote_image(book, index, reverse=False): 
     dot_indexes=[index for index, value in enumerate(book) if value == "."]
     rn=dot_indexes.index(index)
     index , end= dot_indexes[rn-1:rn+1]
