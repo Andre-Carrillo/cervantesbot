@@ -1,6 +1,7 @@
 import random
 import time
 import numpy as np
+import plotly.express as px
 
 from images import frec_image, frec_image_plotly, quote_image
 
